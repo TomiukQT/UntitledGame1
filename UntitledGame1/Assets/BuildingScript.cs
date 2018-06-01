@@ -4,58 +4,71 @@ using UnityEngine;
 
 public class BuildingScript : MonoBehaviour
 {
+    bool creating;
 
-    [SerializeField]
-    private GameObject objToBuild;
-    [SerializeField]
-    private GameObject objToShow;
-    Vector3 place;
-    Vector3 cursor;
+    MousePosition pointer;
 
-    public float rotation = 0;
+    public GameObject objToBuild;
 
-    private GameObject cursorObj;
+    private GameObject lastObj;
 
 	void Start () 
     {
-        cursorObj = Instantiate(objToShow, new Vector3(0, -50, 0), Quaternion.Euler(0, rotation, 0));
+        pointer = GetComponent<MousePosition>();
 	}
 
 
     void Update()
     {
-        //TODO if(BuldingMode)
+        GetInput();
 
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Input.GetMouseButtonDown(0))
-        {
-            
-            if (Physics.Raycast(ray, out hit))
-            {
-                place = new Vector3(hit.point.x, 0, hit.point.z);
-                Instantiate(objToBuild, place, Quaternion.Euler(0, rotation, 0));
-            }
-
-        }
-        if (Physics.Raycast(ray, out hit))
-        {
-            cursor = new Vector3(hit.point.x, 0, hit.point.z);
-            cursorObj.transform.position = cursor;
-            cursorObj.transform.rotation = Quaternion.Euler(0, rotation, 0);
-
-        }
-        
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            rotation += 45f;
-        }
-
-        
-        
     }
 
-    
+    void GetInput()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartBuild();
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            SetBuild();
+        }
+        else if (creating)
+        {
+            UpdateBuild();
+        }
+    }
+
+    void StartBuild()
+    {
+        creating = true;
+        Vector3 startPos = pointer.SnapPosition(pointer.GetWorldPoint());
+        GameObject startObj = Instantiate(objToBuild, startPos, Quaternion.identity);
+        // startObj.transform.position = new Vector3(startPos.x, startPos.y, startPos.z);
+        lastObj = startObj;
+    }
+
+    void SetBuild()
+    {
+        creating = false;
+    }
+
+    void UpdateBuild()
+    {
+        Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
+       // current = new Vector3(current.x, current.y, current.z);
+        if (!current.Equals(lastObj.transform.position))
+        {
+            CreateBuildSegment(current);
+        }
+    }
+
+    void CreateBuildSegment(Vector3 current)
+    {
+        GameObject newObj = Instantiate(objToBuild, current, Quaternion.identity);
+        lastObj = newObj;
+    }
 
 
 }
