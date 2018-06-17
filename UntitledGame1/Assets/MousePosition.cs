@@ -35,7 +35,7 @@ public class MousePosition : MonoBehaviour {
     {
         Vector3 snapped;
         snapped.x = Mathf.Round((original.x + 0.05f) * 10f) / 10f;
-        snapped.y = Mathf.Round((original.y + 0.05f) * 10f) / 10f;
+        snapped.y = 0; //Mathf.Round((original.y + 0.05f) * 10f) / 10f;
         snapped.z = Mathf.Round((original.z + 0.05f) * 10f) / 10f;
         return snapped;
     }

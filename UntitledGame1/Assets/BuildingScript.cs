@@ -1,45 +1,104 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BuildingScript : MonoBehaviour
 {
     bool creating;
 
     MousePosition pointer;
-
+    
     public GameObject objToBuild;
+    public GameObject objToShow;
+   
+    public Material buildingMat;
+    public Material cancelMat;
+
+    public int ableToBuild = -1;
+
 
     private GameObject lastObj;
 
-	void Start () 
+    [SerializeField]
+    private Element[] elements;
+
+    void Start()
     {
-        pointer = GetComponent<MousePosition>();
-	}
+        pointer = GameObject.Find("Main Camera").GetComponent<MousePosition>();
+    }
+
+
 
 
     void Update()
     {
-        GetInput();
 
+        if (objToBuild != null)
+        {
+            GetInput();
+
+            ShowBuildingObject();
+        }
+        
+    }
+
+
+    void ShowBuildingObject()
+    {
+        if (objToShow != null)
+        {
+            Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
+            current.y = 0f;
+            objToShow.transform.position = current;
+            if (ableToBuild > 0)
+            {
+                objToShow.GetComponent<Renderer>().material = cancelMat;
+            }
+            else if (ableToBuild <= 0)
+            {
+                objToShow.GetComponent<Renderer>().material = buildingMat;
+            }
+        }
     }
 
     void GetInput()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            StartBuild();
+            
+            if (!EventSystem.current.IsPointerOverGameObject() && ableToBuild == 0)
+            {
+                BuildObject();
+            }
+            
         }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            SetBuild();
-        }
-        else if (creating)
-        {
-            UpdateBuild();
-        }
+
+       
     }
 
+    void BuildObject()
+    {
+        Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
+        current.y = 0f;
+        Instantiate(objToBuild, current, Quaternion.identity);
+    }
+
+
+    public void ChooseObjectToBuild(int index)
+    {
+
+        if (objToShow != null)
+            Destroy(objToShow);
+
+        objToBuild = elements[index].obj;
+        objToShow = Instantiate(objToBuild, Vector3.zero, Quaternion.identity);
+        objToShow.GetComponent<Renderer>().material = buildingMat;
+    }
+
+    // MULTIBUILDING... Do it later 
+    /*
+    
     void StartBuild()
     {
         creating = true;
@@ -69,6 +128,11 @@ public class BuildingScript : MonoBehaviour
         GameObject newObj = Instantiate(objToBuild, current, Quaternion.identity);
         lastObj = newObj;
     }
+
+    */
+
+
+
 
 
 }
