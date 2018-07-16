@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 65970560827600338}
   - component: {fileID: 54514223791418030}
   - component: {fileID: 114740809861959430}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Cabel
   m_TagString: Solid
   m_Icon: {fileID: 0}

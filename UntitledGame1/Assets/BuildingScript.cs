@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class BuildingScript : MonoBehaviour
 {
     bool creating;
+    public int mode; //1 for building mode, 2 for trash mode;
 
     MousePosition pointer;
     
@@ -26,6 +27,7 @@ public class BuildingScript : MonoBehaviour
     void Start()
     {
         pointer = GameObject.Find("Main Camera").GetComponent<MousePosition>();
+        mode = 1;
     }
 
 
@@ -46,7 +48,7 @@ public class BuildingScript : MonoBehaviour
 
     void ShowBuildingObject()
     {
-        if (objToShow != null)
+        if (objToShow != null && mode != 2)
         {
             Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
             current.y = 0f;
@@ -66,15 +68,26 @@ public class BuildingScript : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            
-            if (!EventSystem.current.IsPointerOverGameObject() && ableToBuild == 0)
+
+            if (!EventSystem.current.IsPointerOverGameObject() && ableToBuild == 0 && mode == 1)
             {
                 BuildObject();
             }
-            
+
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (!EventSystem.current.IsPointerOverGameObject() && mode == 2)
+            {
+                RaycastHit hit = pointer.GetRaycastHit();
+
+                GameObject obj = hit.transform.gameObject;
+
+                DestroyObject(obj);
+            }            
         }
 
-       
+
     }
 
     void BuildObject()
@@ -82,12 +95,19 @@ public class BuildingScript : MonoBehaviour
         Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
         current.y = 0f;
         Instantiate(objToBuild, current, Quaternion.identity);
+        ableToBuild = 0;
+    }
+
+    void DestroyObject(GameObject o)
+    {
+        if (o.name != "Plane")
+        Destroy(o);
     }
 
 
     public void ChooseObjectToBuild(int index)
     {
-
+        ChangeMode(1);
         if (objToShow != null)
             Destroy(objToShow);
 
@@ -95,6 +115,12 @@ public class BuildingScript : MonoBehaviour
         objToShow = Instantiate(objToBuild, Vector3.zero, Quaternion.identity);
         objToShow.GetComponent<Renderer>().material = buildingMat;
     }
+
+    public void ChangeMode(int m)
+    {
+        mode = m;
+    }
+
 
     // MULTIBUILDING... Do it later 
     /*
