@@ -6,6 +6,8 @@ public class Clocks : MonoBehaviour {
 
     private UIManager ui;
 
+    private Light light;
+
     private float timer = 0.0f;
 
     [Range(1, 2000)]
@@ -38,13 +40,15 @@ public class Clocks : MonoBehaviour {
 
     void Start()
     {
-        ui = GameObject.Find("UI").GetComponent<UIManager>();       
+        ui = GameObject.Find("UI").GetComponent<UIManager>();
+        light = GameObject.Find("Sun").GetComponent<Light>();
     }
 
 
     void Update()
     {
         UpdateTime();
+        UpdateLight();
         UpdateTextUI();
     }
 
@@ -99,6 +103,20 @@ public class Clocks : MonoBehaviour {
             month = 1;
             year++;
         }
+    }
+
+    private void UpdateLight()
+    {
+        if (hours == 22)
+        {
+            light.intensity = 0;
+        }
+        if (hours == 6)
+        {
+            light.intensity = 1;
+        }
+
+
     }
 
     private void UpdateTextUI()
