@@ -10,7 +10,6 @@ public class BuildingScript : MonoBehaviour
 
     MousePosition pointer;
     
-    
     public GameObject objToBuild;
     public GameObject objToShow;
    
@@ -27,8 +26,6 @@ public class BuildingScript : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = false;
-
         pointer = GameObject.Find("Main Camera").GetComponent<MousePosition>();
         mode = 1;
     }
@@ -69,17 +66,6 @@ public class BuildingScript : MonoBehaviour
 
     void GetInput()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            
-            Cursor.visible = true;
-        }
-        if (Input.GetKeyUp(KeyCode.O))
-        {
-            Cursor.visible = false;
-        }
-
-
         if (Input.GetMouseButtonDown(0))
         {
 
@@ -122,9 +108,6 @@ public class BuildingScript : MonoBehaviour
     public void ChooseObjectToBuild(int index)
     {
         ChangeMode(1);
-
-        Debug.Log("Chosen obj to build");
-
         if (objToShow != null)
             Destroy(objToShow);
 
