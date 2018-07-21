@@ -6,7 +6,8 @@ public class Clocks : MonoBehaviour {
 
     private UIManager ui;
 
-    private Light light;
+    [SerializeField]
+    private Transform sun;
 
     private float timer = 0.0f;
 
@@ -41,14 +42,14 @@ public class Clocks : MonoBehaviour {
     void Start()
     {
         ui = GameObject.Find("UI").GetComponent<UIManager>();
-        light = GameObject.Find("Sun").GetComponent<Light>();
+        
     }
 
 
     void Update()
     {
         UpdateTime();
-        UpdateLight();
+        
         UpdateTextUI();
     }
 
@@ -77,8 +78,8 @@ public class Clocks : MonoBehaviour {
     private void Tick()
     {
         minutes++;
-
-        if(minutes >= 60)
+        UpdateLight();
+        if (minutes >= 60)
         {
             minutes = 0;
             hours++;
@@ -107,15 +108,8 @@ public class Clocks : MonoBehaviour {
 
     private void UpdateLight()
     {
-        if (hours == 22)
-        {
-            light.intensity = 0;
-        }
-        if (hours == 6)
-        {
-            light.intensity = 1;
-        }
 
+        sun.Rotate(0,0.25f,0);
 
     }
 
