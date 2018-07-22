@@ -85,6 +85,17 @@ public class BuildingScript : MonoBehaviour
                 DestroyObject(obj);
             }            
         }
+        if (Input.GetMouseButtonDown(0))
+        {
+
+            if (!EventSystem.current.IsPointerOverGameObject() && mode == "plant")
+            {
+                
+                PlantCrop();
+            }
+
+        }
+
 
 
     }
@@ -166,7 +177,14 @@ public class BuildingScript : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit))
             {
-                Debug.Log(hit.collider.gameObject.name.ToString());
+                if (hit.collider.gameObject.name == "Farmland(Clone)")
+                {
+                    SnapCropToFarmLand(hit.collider.gameObject);
+                }
+                else
+                {
+                    
+                }
 
             }
 
@@ -187,13 +205,31 @@ public class BuildingScript : MonoBehaviour
         }
     }
 
+    void SnapCropToFarmLand(GameObject farmland)
+    {      
+        cropToShow.transform.position = new Vector3(farmland.transform.position.x, farmland.transform.position.y +0.1f, farmland.transform.position.z);
+    }
 
-    void CropPlant()
+    void PlantCrop()
     {
-        Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
-        current.y = 0f;
-        Instantiate(cropToPlant, current, Quaternion.identity);
-        ableToBuild = 0;
+
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.Log(hit.collider.gameObject.name.ToString());
+            if (hit.collider.gameObject.name == "Farmland(Clone)" && !hit.collider.gameObject.GetComponent<FarmlandProperties>().isOccupied)
+            {
+                Debug.Log("ahoj");
+                GameObject farmland = hit.collider.gameObject;
+                Vector3 current = new Vector3(farmland.transform.position.x, farmland.transform.position.y + 0.1f, farmland.transform.position.z);
+                Instantiate(cropToPlant, current, Quaternion.identity);
+                farmland.GetComponent<FarmlandProperties>().isOccupied = true;
+            }
+           
+
+        }
+
     }
 
     #endregion
