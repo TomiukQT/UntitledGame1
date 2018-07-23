@@ -5,21 +5,26 @@ using UnityEngine;
 
 public class BeeHiveUIManager : MonoBehaviour {
 
-    public Button collectButton;
+    public Text honeyText;
+
+    private BeeHive beeHive;
 
 	void Start () 
     {
-		
+        beeHive = this.GetComponent<BeeHive>();
 	}
 	
 	
 	void Update () 
     {
-		
+        UpdateText();
 	}
 
-    public void Collect()
+    private void UpdateText()
     {
-        Debug.Log("clickeed");          
+        honeyText.text = string.Format("Honey: {0} ml", beeHive.honeyAmount.ToString("0"));
+
     }
+
+    
 }

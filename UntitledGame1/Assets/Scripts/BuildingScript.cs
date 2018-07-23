@@ -24,7 +24,7 @@ public class BuildingScript : MonoBehaviour
 
     private GameObject lastObj;
 
-    private Camera camera;
+    
 
     [SerializeField]
     private Crop[] crops;
@@ -33,10 +33,9 @@ public class BuildingScript : MonoBehaviour
     public GameObject cropToShow;
 
     void Start()
-    {
-        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+    {      
         pointer = GameObject.Find("Main Camera").GetComponent<MousePosition>();
-        mode = "build";
+        mode = "none";
     }
 
 
@@ -76,6 +75,11 @@ public class BuildingScript : MonoBehaviour
             }
 
         }
+        if (Input.GetMouseButtonDown(1))
+        {
+            DestroyAllShowingObjects();
+            mode = "none";
+        }
         if (Input.GetMouseButtonDown(0))
         {
             if (!EventSystem.current.IsPointerOverGameObject() && mode == "trash")
@@ -111,7 +115,7 @@ public class BuildingScript : MonoBehaviour
         if (objToShow != null && mode == "build")
         {
             Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
-            current.y = 0f;
+            current.y = 0f + (objToBuild.transform.localScale.y / 2);
             objToShow.transform.position = current;
             if (ableToBuild > 0)
             {
@@ -128,7 +132,7 @@ public class BuildingScript : MonoBehaviour
     void BuildObject()
     {
         Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
-        current.y = 0f;
+        current.y = 0f + (objToBuild.transform.localScale.y/2);
         Instantiate(objToBuild, current, Quaternion.identity);
         ableToBuild = 0;
     }

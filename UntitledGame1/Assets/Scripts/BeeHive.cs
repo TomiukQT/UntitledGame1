@@ -73,4 +73,12 @@ public class BeeHive : MonoBehaviour {
     }
 
 
+    public void Collect()
+    {
+        float honeyToCollect = Mathf.Floor(honeyAmount);
+        honeyAmount -= honeyToCollect;
+        Debug.Log("Collected: " + honeyToCollect);
+    }
+
+
 }
