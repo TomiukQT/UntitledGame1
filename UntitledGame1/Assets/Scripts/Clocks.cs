@@ -36,8 +36,8 @@ public class Clocks : MonoBehaviour {
     private string clockText;
     private string dateText;
 
-
-    private int timeSpeed = 1;
+    [HideInInspector]
+    public int timeSpeed = 1;
 
     void Start()
     {

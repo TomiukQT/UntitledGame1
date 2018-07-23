@@ -24,7 +24,7 @@ public class BuildingScript : MonoBehaviour
 
     private GameObject lastObj;
 
-    
+    private Camera camera;
 
     [SerializeField]
     private Crop[] crops;
@@ -34,6 +34,7 @@ public class BuildingScript : MonoBehaviour
 
     void Start()
     {
+        camera = GameObject.Find("Main Camera").GetComponent<Camera>();
         pointer = GameObject.Find("Main Camera").GetComponent<MousePosition>();
         mode = "build";
     }
@@ -65,6 +66,7 @@ public class BuildingScript : MonoBehaviour
 
     void GetInput()
     {
+       
         if (Input.GetMouseButtonDown(0))
         {
 
@@ -146,6 +148,11 @@ public class BuildingScript : MonoBehaviour
         objToBuild = elements[index].obj;
         objToShow = Instantiate(objToBuild, Vector3.zero, Quaternion.identity);
         objToShow.GetComponent<Renderer>().material = buildingMat;
+        Collider[] colliders = objToShow.GetComponents<Collider>();
+        foreach (Collider col in colliders)
+        {
+            col.enabled = false;
+        }
     }
     #endregion
 
@@ -164,7 +171,7 @@ public class BuildingScript : MonoBehaviour
         DestroyAllShowingObjects();
 
         cropToPlant = crops[index].obj;
-        cropToShow = Instantiate(cropToPlant, Vector3.zero, Quaternion.identity);
+        cropToShow = Instantiate(cropToPlant, Vector3.zero, Quaternion.identity);        
        // cropToShow.GetComponent<Renderer>().material = buildingMat;
     }
 
