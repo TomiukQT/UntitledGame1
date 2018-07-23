@@ -6,6 +6,7 @@ using UnityEngine;
 public class BeeHiveUIManager : MonoBehaviour {
 
     public Text honeyText;
+    public Text rackText;
 
     private BeeHive beeHive;
 
@@ -23,6 +24,7 @@ public class BeeHiveUIManager : MonoBehaviour {
     private void UpdateText()
     {
         honeyText.text = string.Format("Honey: {0} ml", beeHive.honeyAmount.ToString("0"));
+        rackText.text = string.Format("Racks: {0}", beeHive.racks);
 
     }
 

@@ -12,8 +12,10 @@ public class BeeHive : MonoBehaviour {
 
     public float honeyAmount;
 
-    [Range(0,1)]
-    public float beesHealth = 1;
+    public float racks = 1f;
+
+    [Range(0, 1)]
+    public float beesHealth = 1f;
 
     private float timer;
 
@@ -21,19 +23,19 @@ public class BeeHive : MonoBehaviour {
     private GameObject currentBees;
 
 
-    void Start () 
+    void Start()
     {
         clocks = GameObject.Find("GameManager").GetComponent<Clocks>();
     }
-   
 
-	
-	void Update () 
+
+
+    void Update()
     {
         UpdateTime();
-        
 
-	}
+
+    }
 
     void UpdateTime()
     {
@@ -48,16 +50,16 @@ public class BeeHive : MonoBehaviour {
 
     private void Tick()
     {
-        honeyAmount += (honeyProduction - honeyConsumption) * beesHealth /10;
+        honeyAmount += (honeyProduction - honeyConsumption) * racks * beesHealth / 10;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-       /* if (other.GetComponent<Collider>().GetType() == typeof(CircleCollider2D))
-        {
-            
-        }
-         */   
+        /* if (other.GetComponent<Collider>().GetType() == typeof(CircleCollider2D))
+         {
+
+         }
+          */
         if (other.tag == "Player")
         {
             currentBees = Instantiate(bees, this.transform.position + this.transform.forward, Quaternion.identity);
@@ -68,10 +70,15 @@ public class BeeHive : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            Destroy(currentBees);
+            StartCoroutine(DestroyBees(currentBees));
         }
     }
 
+    private IEnumerator DestroyBees(GameObject curr)
+    {
+        yield return new WaitForSeconds(5f);
+        Destroy(curr);
+    }
 
     public void Collect()
     {
@@ -79,6 +86,23 @@ public class BeeHive : MonoBehaviour {
         honeyAmount -= honeyToCollect;
         Debug.Log("Collected: " + honeyToCollect);
     }
+
+    public void AddRack()
+    {
+        if (racks < 10)
+        {
+            racks++;
+        }
+    }
+
+    public void RemoveRack()
+    {
+        if (racks > 0)
+        {
+            racks--;
+        }
+    }
+
 
 
 }
