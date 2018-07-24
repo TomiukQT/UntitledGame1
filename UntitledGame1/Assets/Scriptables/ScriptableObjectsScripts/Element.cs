@@ -10,6 +10,7 @@ public class Element : ScriptableObject {
     public string description;
 
     public GameObject obj;
+    public GameObject showObj;
 
 
     public float cost;

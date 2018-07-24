@@ -8,6 +8,9 @@ public class BeeHiveUIManager : MonoBehaviour {
     public Text honeyText;
     public Text rackText;
 
+    public Slider hp;
+    public Text hpText;
+
     private BeeHive beeHive;
 
 	void Start () 
@@ -25,6 +28,8 @@ public class BeeHiveUIManager : MonoBehaviour {
     {
         honeyText.text = string.Format("Honey: {0} ml", beeHive.honeyAmount.ToString("0"));
         rackText.text = string.Format("Racks: {0}", beeHive.racks);
+        hpText.text = string.Format("{0}%", (beeHive.beesHealth * 100).ToString("0"));
+        hp.value = beeHive.beesHealth;
 
     }
 

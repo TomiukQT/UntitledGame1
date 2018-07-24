@@ -15,6 +15,7 @@ public class BuildingScript : MonoBehaviour
 
     public GameObject objToBuild;
     public GameObject objToShow;
+
    
     public Material buildingMat;
     public Material cancelMat;
@@ -66,6 +67,14 @@ public class BuildingScript : MonoBehaviour
     void GetInput()
     {
        
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            if (mode == "build")
+            {
+                RotateShowingObject();
+            }
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
 
@@ -128,12 +137,16 @@ public class BuildingScript : MonoBehaviour
         }
     }
 
+    void RotateShowingObject()
+    {
+        objToShow.transform.Rotate(new Vector3(0f, 90f, 0f));
+    }
 
     void BuildObject()
     {
         Vector3 current = pointer.SnapPosition(pointer.GetWorldPoint());
         current.y = 0f + (objToBuild.transform.localScale.y/2);
-        Instantiate(objToBuild, current, Quaternion.identity);
+        Instantiate(objToBuild, current, objToShow.transform.rotation);
         ableToBuild = 0;
     }
 
@@ -150,14 +163,18 @@ public class BuildingScript : MonoBehaviour
         DestroyAllShowingObjects();
 
         objToBuild = elements[index].obj;
-        objToShow = Instantiate(objToBuild, Vector3.zero, Quaternion.identity);
+        objToShow = Instantiate(elements[index].showObj, Vector3.zero, Quaternion.identity);
         objToShow.GetComponent<Renderer>().material = buildingMat;
         
-        Collider[] colliders = objToShow.GetComponents<Collider>();
+       /* Collider[] colliders = objToShow.GetComponents<Collider>();
         foreach (Collider col in colliders)
         {
-            col.enabled = false;
-        }
+            if (!col.isTrigger)
+            {
+                col.isTrigger = true;
+            }
+            
+        }*/
     }
     #endregion
 
@@ -235,8 +252,10 @@ public class BuildingScript : MonoBehaviour
                 Debug.Log("ahoj");
                 GameObject farmland = hit.collider.gameObject;
                 Vector3 current = new Vector3(farmland.transform.position.x, farmland.transform.position.y + 0.1f, farmland.transform.position.z);
-                Instantiate(cropToPlant, current, Quaternion.identity);
+                GameObject planted = Instantiate(cropToPlant, current, Quaternion.identity);
+                planted.GetComponent<CropScript>().isPlanted = true;
                 farmland.GetComponent<FarmlandProperties>().isOccupied = true;
+
             }
            
 

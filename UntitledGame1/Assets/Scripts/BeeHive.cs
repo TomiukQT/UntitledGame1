@@ -6,6 +6,7 @@ public class BeeHive : MonoBehaviour {
 
     private Clocks clocks;
 
+    private Canvas ui;
 
     public float honeyProduction;
     public float honeyConsumption;
@@ -29,6 +30,8 @@ public class BeeHive : MonoBehaviour {
     void Start()
     {
         clocks = GameObject.Find("GameManager").GetComponent<Clocks>();
+        ui = gameObject.GetComponentInChildren<Canvas>();
+        ui.enabled = false;
     }
 
 
@@ -54,6 +57,7 @@ public class BeeHive : MonoBehaviour {
     private void Tick()
     {
         honeyAmount += (honeyProduction - honeyConsumption) * racks * beesHealth / 10;
+        beesHealth -= 0.01f;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -65,6 +69,7 @@ public class BeeHive : MonoBehaviour {
           */
         if (other.tag == "Player")
         {
+            ui.enabled = true;
             currentBees = Instantiate(bees, this.transform.position + this.transform.forward, Quaternion.identity);
         }
     }
@@ -73,6 +78,7 @@ public class BeeHive : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+            ui.enabled = false;
             StartCoroutine(DestroyBees(currentBees));
         }
     }
