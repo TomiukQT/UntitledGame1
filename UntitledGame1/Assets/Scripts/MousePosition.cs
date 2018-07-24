@@ -5,29 +5,10 @@ using UnityEngine;
 public class MousePosition : MonoBehaviour {
 
 
-    public GameObject mousePointer;
+  
     public BuildingScript bScript;
 
-    void Start()
-    {
-        mousePointer = Instantiate(mousePointer, Vector3.zero, Quaternion.Euler(0, 0, 0));
-    }
-
-   
-
-
-    void Update()
-    {
-        if (bScript.mode == "trash")
-        {
-            mousePointer.transform.position = new Vector3(0, 1000, 0);
-        }
-        else
-        {
-            mousePointer.transform.position = SnapPosition(GetWorldPoint());
-        }
-        
-    }
+    
 
     public Vector3 GetWorldPoint()
     {

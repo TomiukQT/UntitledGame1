@@ -21,12 +21,13 @@ public class Clocks : MonoBehaviour {
     [HideInInspector]
     public int minutes = 0;
 
-    private string[] daysName = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN" };
-    private int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+   // private string[] daysName = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN" };
+    //private int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    private string[] monthsName = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
     private int dayInWeek = 0;
 
     [HideInInspector]
-    public int day = 1;
+    public int week = 1;
     [HideInInspector]
     public int month = 1;
     [HideInInspector]
@@ -87,16 +88,11 @@ public class Clocks : MonoBehaviour {
         if(hours >= 24)
         {
             hours = 0;
-            dayInWeek++;
-            day++;
-        }
-        if(dayInWeek >= 7)
+            week++;
+        }     
+        if (week > 2)
         {
-            dayInWeek = 0;
-        }
-        if (day > daysInMonth[month-1])
-        {
-            day = 1;
+            week = 1;
             month++;
         }
         if(month >= 13)
@@ -122,11 +118,11 @@ public class Clocks : MonoBehaviour {
         clockText = string.Format("{0}:{1}", h, m);
         ui.ClockText.text = clockText;
 
-        string d = FormatTimeText(day.ToString());
+    
         string mo = FormatTimeText(month.ToString());
         string y = year.ToString();
-
-        dateText = string.Format("{0} {1}/{2} {3}", daysName[dayInWeek], d, mo, y);
+      
+        dateText = string.Format("WEEK {0} {1}-{2} {3}", week, mo, monthsName[month-1], y);
         ui.DateText.text = dateText;
 
     }

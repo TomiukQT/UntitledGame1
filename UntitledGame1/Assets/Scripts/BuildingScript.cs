@@ -152,6 +152,7 @@ public class BuildingScript : MonoBehaviour
         objToBuild = elements[index].obj;
         objToShow = Instantiate(objToBuild, Vector3.zero, Quaternion.identity);
         objToShow.GetComponent<Renderer>().material = buildingMat;
+        
         Collider[] colliders = objToShow.GetComponents<Collider>();
         foreach (Collider col in colliders)
         {

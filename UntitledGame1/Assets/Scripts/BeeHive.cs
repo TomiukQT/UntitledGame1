@@ -22,6 +22,9 @@ public class BeeHive : MonoBehaviour {
     public GameObject bees;
     private GameObject currentBees;
 
+    public GameObject honeyComb;
+    public GameObject dropArea;
+
 
     void Start()
     {
@@ -82,10 +85,25 @@ public class BeeHive : MonoBehaviour {
 
     public void Collect()
     {
-        float honeyToCollect = Mathf.Floor(honeyAmount);
+        if (honeyAmount < 100)
+            return;
+
+
+        int combsToDrop = (int)Mathf.Floor(honeyAmount / 100);
+        float honeyToCollect = (float)combsToDrop * 100;
         honeyAmount -= honeyToCollect;
-        Debug.Log("Collected: " + honeyToCollect);
+        DropCombs(combsToDrop);
+       
     }
+
+    public void DropCombs(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            Instantiate(honeyComb, new Vector3(dropArea.transform.position.x + Random.Range(-0.15f, 0.15f), dropArea.transform.position.y, dropArea.transform.position.z), dropArea.transform.rotation);
+        }
+    }
+
 
     public void AddRack()
     {
