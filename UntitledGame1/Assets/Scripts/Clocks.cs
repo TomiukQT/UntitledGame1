@@ -24,7 +24,6 @@ public class Clocks : MonoBehaviour {
    // private string[] daysName = { "MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN" };
     //private int[] daysInMonth = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
     private string[] monthsName = { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC" };
-    private int dayInWeek = 0;
 
     [HideInInspector]
     public int week = 1;

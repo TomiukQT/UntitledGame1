@@ -12,6 +12,13 @@ public class CropScript : MonoBehaviour {
     private Clocks clocks;
     private float timer;
 
+    public float maxGrow = 150;
+    public float actuallGrow = 0;
+    public bool isReady = false;
+
+    public Item harvestItem;
+    public int harvestItemCount;
+
 	void Start () 
     {
         clocks = GameObject.Find("GameManager").GetComponent<Clocks>();
@@ -50,14 +57,22 @@ public class CropScript : MonoBehaviour {
     {
         if(isPlanted)
         {
+            if(actuallGrow < maxGrow)
+            actuallGrow += 0.1f;
             foreach (GameObject stem in stems)
             {
-                if(stem.transform.localScale.y < 1f)
-                stem.transform.localScale += new Vector3(0, 0.1f, 0);
-
+                if(gameObject.transform.localScale.y < maxGrow/7.5f)
+                gameObject.transform.localScale = new Vector3(gameObject.transform.localScale.x, 0.15f + actuallGrow/7.5f, gameObject.transform.localScale.z);
+                if(actuallGrow >= maxGrow )
+                {
+                    isReady = true;
+                }
             }
         }
     }
+
+ 
+
         
 
 }

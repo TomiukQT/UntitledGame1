@@ -39,9 +39,6 @@ public class BuildingScript : MonoBehaviour
         mode = "none";
     }
 
-
-
-
     void Update()
     {
 
@@ -57,13 +54,13 @@ public class BuildingScript : MonoBehaviour
             ShowPlantingCrop();
 
         }
+        if (Input.GetMouseButtonDown(1) && mode == "none")
+        {
+            HarvestCrop();
+        }
 
-        
     }
-
-
-   
-
+ 
     void GetInput()
     {
        
@@ -84,11 +81,13 @@ public class BuildingScript : MonoBehaviour
             }
 
         }
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && mode != "none")
         {
             DestroyAllShowingObjects();
+            ableToBuild = 0;
             mode = "none";
         }
+        
         if (Input.GetMouseButtonDown(0))
         {
             if (!EventSystem.current.IsPointerOverGameObject() && mode == "trash")
@@ -235,8 +234,13 @@ public class BuildingScript : MonoBehaviour
     }
 
     void SnapCropToFarmLand(GameObject farmland)
-    {      
-        cropToShow.transform.position = new Vector3(farmland.transform.position.x, farmland.transform.position.y +0.1f, farmland.transform.position.z);
+    {
+        Collider[] colliders = cropToShow.GetComponents<Collider>();
+        foreach (Collider col in colliders)
+        {
+            col.enabled = false;
+        }
+        cropToShow.transform.position = new Vector3(farmland.transform.position.x, farmland.transform.position.y + 0.1f, farmland.transform.position.z);
     }
 
     void PlantCrop()
@@ -262,6 +266,38 @@ public class BuildingScript : MonoBehaviour
         }
 
     }
+
+
+    void HarvestCrop()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.Log(hit.collider.gameObject.name.ToString());
+            if (hit.collider.gameObject.name == "Wheat(Clone)" && hit.collider.gameObject.GetComponent<CropScript>().isReady)
+            {
+                Debug.Log("je ready");
+                
+                GameObject crop = hit.collider.gameObject;
+               
+                for (int i = 0; i < crop.GetComponent<CropScript>().harvestItemCount; i++)
+                {
+                    Vector3 current = new Vector3(crop.transform.position.x + Random.Range(-0.15f, 0.15f), crop.transform.position.y + 1f, crop.transform.position.z);
+                    GameObject planted = Instantiate(crop.GetComponent<CropScript>().harvestItem.obj, current, Quaternion.identity);
+                    planted.transform.Rotate(new Vector3(Random.Range(0, 180), Random.Range(0,180),Random.Range(0, 180)));
+                }
+
+                Destroy(crop);
+                                        
+
+            }
+
+
+        }
+    }
+    
+
 
     #endregion
 
@@ -310,4 +346,4 @@ public class BuildingScript : MonoBehaviour
 
 
 
-}
+    }
