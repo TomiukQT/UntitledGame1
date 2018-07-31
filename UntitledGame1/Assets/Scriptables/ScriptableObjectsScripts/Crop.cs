@@ -9,10 +9,17 @@ public class Crop : ScriptableObject
     public string description;
 
     public Sprite icon;
+
+    
     public GameObject obj;
+    
 
     public float cost;
+    public enum Type
+    {
+        grain,vegetable
+    }
+    public Type type;
 
-	
-	
+
 }

@@ -275,7 +275,7 @@ public class BuildingScript : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             Debug.Log(hit.collider.gameObject.name.ToString());
-            if (hit.collider.gameObject.name == "Wheat(Clone)" && hit.collider.gameObject.GetComponent<CropScript>().isReady)
+            if (hit.collider.gameObject.tag == "Crop" && hit.collider.gameObject.GetComponent<CropScript>().isReady)
             {
                 Debug.Log("je ready");
                 
