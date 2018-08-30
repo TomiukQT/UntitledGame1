@@ -20,7 +20,7 @@ public class BuildingScript : MonoBehaviour
     public Material buildingMat;
     public Material cancelMat;
 
-    public int ableToBuild = -1;
+    public int ableToBuild = 0;
 
 
     private GameObject lastObj;

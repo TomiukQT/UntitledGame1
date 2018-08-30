@@ -5,9 +5,10 @@ using UnityEngine;
 public class Inventory : MonoBehaviour {
 
 
-    public List<Item> inventory; 
-
+    public List<Item> inventory;
+    public int capacity;
 	
+
 	void Start () 
     {
 		inventory = new List<Item>();
@@ -15,7 +16,17 @@ public class Inventory : MonoBehaviour {
 	
 	public void AddItemToInventory(Item i)
     {
-        inventory.Add(i);
+        if(inventory.Count<capacity)
+        {
+            inventory.Add(i);
+        }
+       
+    }
+
+    public void RemoveItemFromInventory(Item i)
+    {
+        inventory.Remove(i);
     }
     
+
 }

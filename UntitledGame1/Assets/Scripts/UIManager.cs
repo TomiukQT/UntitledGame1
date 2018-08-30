@@ -13,8 +13,8 @@ public class UIManager : MonoBehaviour {
     [Header("Clocks")]
     public Text ClockText;
     public Text DateText;
-    
 
+    public Text moneyText;
 
 
     private BuildingScript bScript;

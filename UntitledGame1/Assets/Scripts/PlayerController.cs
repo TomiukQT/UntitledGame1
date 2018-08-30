@@ -84,6 +84,20 @@ public class PlayerController : MonoBehaviour {
             Cursor.visible = !Cursor.visible;
             skillTree.SetActive(!skillTree.activeInHierarchy);
         }
+        //only for debug
+        if(Input.GetKeyDown(KeyCode.LeftAlt))
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            Cursor.visible = !Cursor.visible;
+            
+        }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
